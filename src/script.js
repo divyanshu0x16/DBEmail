@@ -29,9 +29,8 @@ document.addEventListener("DOMContentLoaded", function () {
         getDatabase(results);
     });
 
-    function getDatabase(value) {
+    function getDatabase(data) {
         /*Displaying array on handsontable*/
-        var data = value;
         var container = document.getElementById('example');
         var hot = new Handsontable(container, {
             data: data,
