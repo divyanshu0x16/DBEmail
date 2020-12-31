@@ -36,7 +36,7 @@ document.addEventListener("DOMContentLoaded", function () {
         var hot = new Handsontable(container, {
             data: data,
             rowHeaders: true,
-            colHeaders: true,
+            colHeaders: Object.keys(data[0]),
             filters: true,
             dropdownMenu: ['filter_by_condition', 'filter_action_bar'],
             licenseKey: 'non-commercial-and-evaluation'
