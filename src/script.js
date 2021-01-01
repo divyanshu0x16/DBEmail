@@ -82,14 +82,14 @@ document.addEventListener("DOMContentLoaded", function () {
                     subject: 'Sending Multiple Emails using Node.js',
                     text: `Testing using Node.js \n Name: ${currentObject.name} \n Major: ${currentObject.major} \n`,
                 };
-
+                /*
                 transporter.sendMail(mailOptions, function (error, info) {
                     if (error) {
                         console.log(error);
                     } else {
                         console.log('Email sent: ' + info.response);
                     }
-                });
+                });*/
             });
         });
     }
