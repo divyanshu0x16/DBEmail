@@ -23,7 +23,6 @@ document.addEventListener("DOMContentLoaded", function () {
 
     connection.connect();
 
-    var database = [];
     connection.query('SELECT * FROM student', function (error, results, fields) {
         if (error) throw error;
         getDatabase(results);
