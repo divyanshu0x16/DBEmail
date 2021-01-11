@@ -1,98 +1,71 @@
-document.addEventListener("DOMContentLoaded", function () {
+const { GoogleSpreadsheet } = require('google-spreadsheet');
 
-    console.log("Connected!!");
+const { default: Handsontable } = require('handsontable');
 
-    const { default: Handsontable } = require('handsontable');
-    var mysql = require('mysql');
-    var connection = mysql.createConnection({
-        host: 'localhost',
-        user: 'divyanshu',
-        password: 'Divyanshu',
-        database: 'testing'
+const creds = require('./js/client_secret.json');
+
+const doc = new GoogleSpreadsheet('1NJYhbSjA4Yij0COr5QdFIiXOnXRd1Ch0J5PAw9c5_s8');
+
+var fetchData = async () => {
+  await doc.useServiceAccountAuth(creds);
+  await doc.loadInfo();
+  const sheet = doc.sheetsByIndex[0];
+
+  var rows = await sheet.getRows();
+  rows = rows.map(a => a._rawData);
+  var headerRow = sheet.headerValues;
+
+
+  var database = [];
+  for (let i = 0; i < rows.length; i++) {
+    let firstArray = rows[i];
+    let secondArray = headerRow;
+    let arrayOfObject = secondArray.map(function (value, index) {
+      return [value, firstArray[index]]
     });
+    let obj = Object.fromEntries(arrayOfObject);
+    database.push(obj);
+  }
 
-    var nodemailer = require('nodemailer');
+  return database;
+};
 
-    var transporter = nodemailer.createTransport({
-        service: 'gmail',
-        auth: {
-            user: 'apnaDalo',
-            pass: 'NopeNope'
-        }
-    });
+(async () => {
+  const database = await fetchData();
+  console.log(database);
 
-    connection.connect();
+  var options = {
+    valueNames: Object.keys(database[0]),
+    // Since there are no elements in the list, this will be used as template.
+    item: `<table>
+    <!-- IMPORTANT, class="list" have to be at tbody -->
+    <tbody class="list">
+      <tr class="even">
+        <td id="cols" class="Timestamp"></td>
+        <td id="cols" class="Name"></td>
+        <td id="cols" class="Occupation"></td>
+        <td id="cols" class="Question"></td>
+        <td id="cols" class="Email Address"></td>
+        <td id="cols" class="College/Organization"></td>
+      </tr>
+    </tbody>
+  </table>`,
+  };
+  var searchInputs = document.querySelectorAll('input');
+  var userList = new List('users', options, database);
 
-    connection.query('SELECT * FROM student', function (error, results, fields) {
-        if (error) throw error;
-        getDatabase(results);
-    });
+  function search(e) {
+    userList.search(this.value, e.target.dataset.searchType)
+  }
+  searchInputs.forEach(function (input) {
+    input.addEventListener('input', search);
+  })
 
-    function getDatabase(data) {
-        /*Displaying array on handsontable*/
-        var container = document.getElementById('example');
-        var hot = new Handsontable(container, {
-            data: data,
-            rowHeaders: true,
-            colHeaders: Object.keys(data[0]),
-            filters: true,
-            dropdownMenu: ['filter_by_condition', 'filter_action_bar'],
-            licenseKey: 'non-commercial-and-evaluation'
-        });
+  document.querySelector('.bt').addEventListener('click', function () {
+    var array = [];
+    userList.visibleItems.forEach(element => array.push(element._values));
+    console.log(array);
+  });
 
-        document.querySelector('.bt').addEventListener('click', function () {
+})();
 
-            var visualObjectRow = function (row) {
-                var obj = {};
-                for (let i = 0; i < hot.countCols(); i++) {
-                    obj[hot.colToProp(i)] = hot.getDataAtCell(row, i);
-                }
-                return obj
-            }
-            var filteredData = [];
-            for (let i = 0; i < hot.countRows(); i++) {
-                filteredData.push(visualObjectRow(i));
-            }
-            console.log(filteredData);
-        });
-
-        document.querySelector('.sendEmail').addEventListener('click', function () {
-
-            var visualObjectRow = function (row) {
-                var obj = {};
-                for (let i = 0; i < hot.countCols(); i++) {
-                    obj[hot.colToProp(i)] = hot.getDataAtCell(row, i);
-                }
-                return obj
-            }
-            var filteredData = [];
-            for (let i = 0; i < hot.countRows(); i++) {
-                filteredData.push(visualObjectRow(i));
-            }
-            console.log(filteredData);
-
-            filteredData.forEach(function (currentObject) {
-                console.log(currentObject.email);
-                console.log();
-
-                var mailOptions = {
-                    from: 'apnaDalo',
-                    to: currentObject.email,
-                    subject: 'Sending Multiple Emails using Node.js',
-                    text: `Testing using Node.js \n Name: ${currentObject.name} \n Major: ${currentObject.major} \n`,
-                };
-                /*
-                transporter.sendMail(mailOptions, function (error, info) {
-                    if (error) {
-                        console.log(error);
-                    } else {
-                        console.log('Email sent: ' + info.response);
-                    }
-                });*/
-            });
-        });
-    }
-
-    connection.end();
-
-});
