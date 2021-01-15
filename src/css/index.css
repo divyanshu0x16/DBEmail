@@ -82,3 +82,7 @@ input:focus {
   display:inline-block;
   padding:5px;
 }
+
+.filter-multi-select {
+  width: 350px;
+}

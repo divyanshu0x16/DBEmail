@@ -31,6 +31,7 @@ var fetchData = async () => {
 };
 
 (async () => {
+
   const database = await fetchData();
   console.log(database);
 
@@ -67,5 +68,31 @@ var fetchData = async () => {
     console.log(array);
   });
 
+  const languages = $('#occupations').filterMultiSelect({
+    placeholderText: "nothing selected",
+    filterText: "Filter",
+    selectAllText: "Select All",
+    caseSensitive: false,
+    allowEnablingAndDisabling: true
+  });
+
+  document.querySelector('.ft').addEventListener('click', function () {
+
+    var filters = JSON.parse(languages.getSelectedOptionsAsJson(includeDisabled = true));
+
+    userList.filter(function (item) {
+      if (filters.occupation.length == 0) {
+        return true;
+      } else if (filters.occupation.includes(item.values().Occupation.toLowerCase())) {
+        return true;
+      } else {
+        return false;
+      }
+    });
+
+  });
+
 })();
+
+
 

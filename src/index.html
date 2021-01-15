@@ -4,12 +4,14 @@
 <head>
   <meta charset="UTF-8">
   <title>Hello World!</title>
-  <link rel="stylesheet" href="index.css">
+  <link rel="stylesheet" href="css/index.css">
   <!------->
-  <!-----For Handsontable-->
-  <script src="https://cdn.jsdelivr.net/npm/handsontable@8.2.0/dist/handsontable.full.min.js"></script>
-  <link href="https://cdn.jsdelivr.net/npm/handsontable@8.2.0/dist/handsontable.full.min.css" rel="stylesheet"
-    media="screen">
+  <!-----jQuery and Bootstrap-->
+  <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+  <script src="https://code.jquery.com/jquery-3.2.1.slim.min.js"></script>
+  <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css" />
+  <link rel="stylesheet" href="css/filter_multi_select.css" />
+  <script src="js/filter-multi-select-bundle.min.js"></script>
   <!------->
   <script type="text/javascript" src="js/list.min.js"></script>
   <script src="script.js"></script>
@@ -18,19 +20,24 @@
 
 <body>
   <h1>Using Google Sheets</h1>
-  <div id="example">
-  </div>
 
   <div id="users">
     <div>
       <input data-search-type="Name" class="search" placeholder="Search Name" />
       <input data-search-type="Occupation" class="search" placeholder="Search Occupation" />
       <input data-search-type="College/Organization" class="search" placeholder="Search College/Organization" />
+
+      <select multiple name="occupation" id="occupations">
+        <option value="student">Student</option>
+        <option value="working professional">Working Professional</option>
+        <option value="other">Other</option>
+      </select>
     </div>
+    <hr>
     <ul class="list"></ul>
   </div>
 
-
+  <button class="ft">Fliter Data</button>
   <button class="bt">Console Data</button>
 
 </body>
