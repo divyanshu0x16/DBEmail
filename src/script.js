@@ -30,11 +30,7 @@ var fetchData = async () => {
   return database;
 };
 
-(async () => {
-
-  const database = await fetchData();
-  console.log(database);
-
+function initiliaze(database) {
   var options = {
     valueNames: Object.keys(database[0]),
     // Since there are no elements in the list, this will be used as template.
@@ -51,16 +47,28 @@ var fetchData = async () => {
       </tr>
     </tbody>
   </table>`,
+  page: 8,
+  pagination: true
+
   };
   var searchInputs = document.querySelectorAll('input');
   var userList = new List('users', options, database);
 
   function search(e) {
     userList.search(this.value, e.target.dataset.searchType)
-  }
+  };
   searchInputs.forEach(function (input) {
     input.addEventListener('input', search);
-  })
+  });
+
+  return userList;
+}
+
+(async () => {
+
+  const database = await fetchData();
+
+  userList = initiliaze(database);
 
   document.querySelector('.bt').addEventListener('click', function () {
     var array = [];
@@ -77,9 +85,7 @@ var fetchData = async () => {
   });
 
   document.querySelector('.ft').addEventListener('click', function () {
-
     var filters = JSON.parse(languages.getSelectedOptionsAsJson(includeDisabled = true));
-
     userList.filter(function (item) {
       if (filters.occupation.length == 0) {
         return true;
@@ -89,7 +95,6 @@ var fetchData = async () => {
         return false;
       }
     });
-
   });
 
 })();

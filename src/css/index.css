@@ -82,5 +82,6 @@ input:focus {
 }
 
 .filter-multi-select {
+  display: inline-block;
   width: 350px;
 }
