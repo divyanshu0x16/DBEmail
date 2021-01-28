@@ -74,6 +74,7 @@ function initiliaze(database) {
     var array = [];
     userList.visibleItems.forEach(element => array.push(element._values));
     console.log(array);
+    localStorage.setItem("filteredData", JSON.stringify(array));
   });
 
   const languages = $('#occupations').filterMultiSelect({
