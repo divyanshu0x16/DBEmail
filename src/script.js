@@ -1,6 +1,7 @@
 const { GoogleSpreadsheet } = require('google-spreadsheet');
 
-const { default: Handsontable } = require('handsontable');
+const electron = require('electron');
+const { ipcRenderer } = electron;
 
 const creds = require('./js/client_secret.json');
 
@@ -47,8 +48,8 @@ function initiliaze(database) {
       </tr>
     </tbody>
   </table>`,
-  page: 8,
-  pagination: true
+    page: 8,
+    pagination: true
 
   };
   var searchInputs = document.querySelectorAll('input');
@@ -75,6 +76,7 @@ function initiliaze(database) {
     userList.visibleItems.forEach(element => array.push(element._values));
     console.log(array);
     localStorage.setItem("filteredData", JSON.stringify(array));
+    ipcRenderer.send('main:add');
   });
 
   const languages = $('#occupations').filterMultiSelect({

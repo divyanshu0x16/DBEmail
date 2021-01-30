@@ -1,4 +1,4 @@
-const { app, BrowserWindow } = require('electron');
+const { app, BrowserWindow, ipcMain, remote } = require('electron');
 const path = require('path');
 
 // Handle creating/removing shortcuts on Windows when installing/uninstalling.
@@ -6,9 +6,11 @@ if (require('electron-squirrel-startup')) { // eslint-disable-line global-requir
   app.quit();
 }
 
+var mainWindow;
+
 const createWindow = () => {
   // Create the browser window.
-  const mainWindow = new BrowserWindow({
+  mainWindow = new BrowserWindow({
     width: 1400,
     height: 850,
     webPreferences: {
@@ -47,4 +49,23 @@ app.on('activate', () => {
 
 // In this file you can include the rest of your app's specific main process
 // code. You can also put them in separate files and import them here.
+
+let addWindow;
+
+ipcMain.on('main:add', event => {
+  addWindow = new BrowserWindow({
+    width: 1000,
+    parent: mainWindow,
+    modal: true,
+    webPreferences: {
+      nodeIntegration: true,
+      enableRemoteModule: true
+    }
+  });
+  addWindow.loadURL(`file://${__dirname}/html/email.html`);
+  addWindow.webContents.openDevTools();
+  addWindow.on('closed', () => {
+    addWindow = null;
+  });
+});
 
