@@ -1,6 +1,7 @@
 var data = JSON.parse(localStorage.getItem("filteredData"));
 console.log(data);
 
+const Handlebars = require('handlebars');
 var nodemailer = require('nodemailer');
 
 $(document).ready(function () {
@@ -20,23 +21,29 @@ var transporter = nodemailer.createTransport({
 });
 
 document.querySelector('.se').addEventListener('click', function () {
-    var markupStr = $('#summernote').summernote('code');
-    console.log(markupStr);
 
+    var markupStr = $('#summernote').summernote('code');
+    var script = Handlebars.compile(markupStr);
     var mailOptions = {
         from: 'divyanshu.m@iitgn.ac.in',
-        to: data.map(({ EmailAddress }) => EmailAddress),
         subject: 'Sending Email using Node.js',
-        html: markupStr
     };
 
-    transporter.sendMail(mailOptions, function (error, info) {
-        if (error) {
-            console.log(error);
-        } else {
-            console.log('Email sent: ' + info.response);
-        }
+    data.forEach(element => {
+        console.log(element);
+        mailOptions.to = element.EmailAddress;
+        var current = element;
+        var html = script(current);
+        mailOptions.html = html;
+        transporter.sendMail(mailOptions, function (error, info) {
+            if (error) {
+                console.log(error);
+            } else {
+                console.log('Email sent: ' + info.response);
+            }
+        });
     });
+    console.log(html);
 
 });
 
