@@ -76,6 +76,8 @@ var fetchData = async () => {
       form.forEach( index => filteredData.push(database[index]));
       console.log(filteredData);
 
+      localStorage.setItem("filteredData", JSON.stringify(filteredData));
+      ipcRenderer.send('main:add');
     });
 
     $('#filter').on('click', function(){
