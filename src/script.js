@@ -27,56 +27,62 @@ var fetchData = async () => {
     let obj = Object.fromEntries(arrayOfObject);
     database.push(obj);
   }
-
   return database;
 };
-
-function initiliaze(database) {
-  var options = {
-    valueNames: Object.keys(database[0]),
-    // Since there are no elements in the list, this will be used as template.
-    item: `<table>
-    <!-- IMPORTANT, class="list" have to be at tbody -->
-    <tbody class="list">
-      <tr class="even">
-        <td id="cols" class="Timestamp"></td>
-        <td id="cols" class="Name"></td>
-        <td id="cols" class="Occupation"></td>
-        <td id="cols" class="Question"></td>
-        <td id="cols" class="Email Address"></td>
-        <td id="cols" class="College/Organization"></td>
-      </tr>
-    </tbody>
-  </table>`,
-    page: 8,
-    pagination: true
-
-  };
-  var searchInputs = document.querySelectorAll('input');
-  var userList = new List('users', options, database);
-
-  function search(e) {
-    userList.search(this.value, e.target.dataset.searchType)
-  };
-  searchInputs.forEach(function (input) {
-    input.addEventListener('input', search);
-  });
-
-  return userList;
-}
 
 (async () => {
 
   const database = await fetchData();
 
-  userList = initiliaze(database);
+  var datables = []
+  var index = 0;
+  database.forEach(function (value) {
+    var beh = index.toString();
+    var currObj = [beh];
+    for (var key of Object.keys(value)) {
+      currObj.push(value[key]);
+    }
+    index++;
+    datables.push(currObj);
+  })
 
-  document.querySelector('.bt').addEventListener('click', function () {
-    var array = [];
-    userList.visibleItems.forEach(element => array.push(element._values));
-    console.log(array);
-    localStorage.setItem("filteredData", JSON.stringify(array));
-    ipcRenderer.send('main:add');
+  $(document).ready(function () {
+    var table = $('#table_id').DataTable({
+      data: datables,
+      'columnDefs': [{
+        'targets': 0,
+        'checkboxes': true
+      }],
+      'select':{
+        'style': 'multi'
+      },
+      'order': [[1, 'asc']]
+    });
+
+    $('#send-email').on('click', function(e){
+      const filters = JSON.parse(languages.getSelectedOptionsAsJson(includeDisabled = true));
+      var toSearch = filters.occupation.join('|');
+      table.columns(3).search(toSearch, true, false, true).draw();
+
+      var rows_selected = table.column(0).checkboxes.selected();
+      var form = [];
+
+      $.each(rows_selected, function(index, rowId){
+        form.push(rowId);
+     });
+
+      //Get the data in presentable form
+      var filteredData = [];
+      form.forEach( index => filteredData.push(database[index]));
+      console.log(filteredData);
+
+    });
+
+    $('#filter').on('click', function(){
+      const filters = JSON.parse(languages.getSelectedOptionsAsJson(includeDisabled = true));
+      var toSearch = filters.occupation.join('|');
+      table.columns(3).search(toSearch, true, false, true).draw();
+    });
   });
 
   const languages = $('#occupations').filterMultiSelect({
@@ -85,19 +91,6 @@ function initiliaze(database) {
     selectAllText: "Select All",
     caseSensitive: false,
     allowEnablingAndDisabling: true
-  });
-
-  document.querySelector('.ft').addEventListener('click', function () {
-    var filters = JSON.parse(languages.getSelectedOptionsAsJson(includeDisabled = true));
-    userList.filter(function (item) {
-      if (filters.occupation.length == 0) {
-        return true;
-      } else if (filters.occupation.includes(item.values().Occupation.toLowerCase())) {
-        return true;
-      } else {
-        return false;
-      }
-    });
   });
 
 })();

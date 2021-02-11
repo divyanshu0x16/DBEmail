@@ -45,6 +45,8 @@
     }
   },
   "dependencies": {
+    "datatables.net": "^1.10.23",
+    "datatables.net-dt": "^1.10.23",
     "electron-squirrel-startup": "^1.0.0",
     "google-spreadsheet": "^3.1.15",
     "googleapis": "^39.2.0",

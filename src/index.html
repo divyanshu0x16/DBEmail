@@ -13,6 +13,12 @@
   <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css" />
   <link rel="stylesheet" href="./css/plugins/filter_multi_select.css" />
   <script src="./js/plugins/filter-multi-select-bundle.min.js"></script>
+  <!----Datatables-->
+  <link rel="stylesheet" type="text/css" href="https://cdn.datatables.net/1.10.23/css/jquery.dataTables.css">
+  <script type="text/javascript" charset="utf8" src="https://cdn.datatables.net/1.10.23/js/jquery.dataTables.js"></script>
+  <!-----Checkboxes-->
+  <link type="text/css" href="https://gyrocode.github.io/jquery-datatables-checkboxes/1.2.12/css/dataTables.checkboxes.css" rel="stylesheet" />
+  <script type="text/javascript" src="https://gyrocode.github.io/jquery-datatables-checkboxes/1.2.12/js/dataTables.checkboxes.min.js"></script>
   <!------->
   <script type="text/javascript" src="./js/plugins/list.min.js"></script>
   <script src="./script.js"></script>
@@ -34,13 +40,29 @@
         <option value="other">Other</option>
       </select>
 
-      <button class="ft">Fliter Data</button>
-      <button class="bt">Send Email</button>
+      <button id = "filter">Filter Data</button>
+      <button id = "send-email">Send Email</button>
 
     </div>
     <hr>
-    <ul class="list"></ul>
-    <ul class="pagination"></ul>
+    <!---------<ul class="list"></ul>
+    <ul class="pagination"></ul>------->
+    <table id="table_id" class="display">
+      <thead>
+          <tr>
+              <th></th>
+              <th>Timestamp</th>
+              <th>Name</th>
+              <th>Occupation</th>
+              <th>Question</th>
+              <th>EmailAddress</th>
+              <th>College/Organization</th>
+          </tr>
+      </thead>
+      <tbody>
+          
+      </tbody>
+  </table>
   </div>
 
 </body>
