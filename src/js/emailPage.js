@@ -54,21 +54,26 @@ $(document).ready(function () {
 
 });
 
-var transporter = nodemailer.createTransport({
-    service: 'gmail',
-    auth: {
-        user: '',
-        pass: ''
-    }
-});
-
 document.querySelector('.se').addEventListener('click', function () {
+
+    var email = document.getElementsByName('emailId')[0].value;
+    var password = document.getElementsByName('psw')[0].value;
+    var subject = document.getElementsByName('subject')[0].value;
+
+    var transporter = nodemailer.createTransport({
+        service: 'gmail',
+        auth: {
+            user: email,
+            pass: password,
+        }
+    });
+
 
     var markupStr = $('#summernote').summernote('code');
     var script = Handlebars.compile(markupStr);
     var mailOptions = {
-        from: 'divyanshu.m@iitgn.ac.in',
-        subject: 'Sending Email using Node.js',
+        from: email,
+        subject: subject,
     };
 
     data.forEach(element => {
