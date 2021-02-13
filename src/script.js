@@ -117,7 +117,7 @@ window.onload = function () {
         var sheet_name_list = workbook.SheetNames;
         database = XLSX.utils
           .sheet_to_json(workbook.Sheets[sheet_name_list[0]], { defval: "" })
-          .map((row) => _.mapKeys(row, (value, key) => key.trim()));
+          .map((row) => _.mapKeys(row, (value, key) => key.trim().replace(/\s/g, "")));
         renderTable(database);
       })
       .catch((err) => {
