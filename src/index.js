@@ -55,7 +55,8 @@ let addWindow;
 
 ipcMain.on('main:add', event => {
   addWindow = new BrowserWindow({
-    width: 1000,
+    width: 1200,
+    height: 750,
     parent: mainWindow,
     modal: true,
     webPreferences: {
