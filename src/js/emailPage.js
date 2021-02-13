@@ -54,7 +54,7 @@ $(document).ready(function () {
 
 });
 
-document.querySelector('.se').addEventListener('click', function () {
+document.querySelector('#se').addEventListener('click', function () {
 
     var email = document.getElementsByName('emailId')[0].value;
     var password = document.getElementsByName('psw')[0].value;
@@ -83,13 +83,26 @@ document.querySelector('.se').addEventListener('click', function () {
         var html = script(current);
         mailOptions.html = html;
 
-        /*transporter.sendMail(mailOptions, function (error, info) {
+        var flag = 0;
+        var button = document.getElementById("se");
+
+        transporter.sendMail(mailOptions, function (error, info) {
             if (error) {
                 console.log(error);
+                flag = 1;
             } else {
                 console.log('Email sent: ' + info.response);
             }
-        });*/
+
+            if(flag == 0){
+                button.className = "btn btn-success";
+                button.innerText = "Success!"
+            }else{
+                button.className = "btn btn-danger";
+                button.innerText = "Error!!"
+            }
+        });
+
     });
 
 });
