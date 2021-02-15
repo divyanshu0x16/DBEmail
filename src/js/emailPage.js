@@ -1,6 +1,8 @@
 var data = JSON.parse(localStorage.getItem("filteredData"));
 console.log(data);
 
+const { dialog } = require("electron").remote;
+
 const Handlebars = require('handlebars');
 var nodemailer = require('nodemailer');
 
@@ -76,6 +78,7 @@ document.querySelector('#se').addEventListener('click', function () {
         subject: subject,
     };
 
+    var flag = 0;
     data.forEach(element => {
 
         mailOptions.to = element.EmailAddress;
@@ -83,13 +86,12 @@ document.querySelector('#se').addEventListener('click', function () {
         var html = script(current);
         mailOptions.html = html;
 
-        var flag = 0;
         var button = document.getElementById("se");
 
         transporter.sendMail(mailOptions, function (error, info) {
             if (error) {
-                console.log(error);
                 flag = 1;
+                dialog.showErrorBox('Error', error.message);
             } else {
                 console.log('Email sent: ' + info.response);
             }
