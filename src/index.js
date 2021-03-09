@@ -66,7 +66,7 @@ ipcMain.on("main:add", (event) => {
         },
     });
     addWindow.loadURL(`file://${__dirname}/html/email.html`);
-    addWindow.webContents.openDevTools();
+    //addWindow.webContents.openDevTools();
     addWindow.on("closed", () => {
         addWindow = null;
     });
