@@ -2,7 +2,12 @@ var data = JSON.parse(localStorage.getItem("filteredData"));
 console.log(data);
 
 const { dialog } = require("electron").remote;
+function getFileExtension(filename){
 
+    // get file extension
+    const extension = filename.split('.').pop();
+    return extension;
+}
 const Handlebars = require("handlebars");
 var nodemailer = require("nodemailer");
 
@@ -54,7 +59,28 @@ $(document).ready(function () {
         },
     });
 });
-
+var all_attachments=[]
+var path_got;var file_name;
+document.getElementById("add-att").onclick=function add(){
+    dialog
+    .showOpenDialog(
+        {
+            properties:["openFile"]
+        }
+    )
+    .then((result)=>{
+        
+         
+        path_got=result.filePaths[0]
+      //  console.log(path_got)
+        file_name=path_got.split('/').pop()
+        console.log(file_name)
+        all_attachments.push({filename:file_name,path:path_got})
+      //  console.log("%%%%%%%%%%")
+        //console.log(all_attachments)
+       
+    })
+}
 document.querySelector("#se").addEventListener("click", function () {
     var email = document.getElementsByName("emailId")[0].value;
     var password = document.getElementsByName("psw")[0].value;
@@ -75,17 +101,23 @@ document.querySelector("#se").addEventListener("click", function () {
         subject: subject,
     };
 
+
     var errorFlag = 0;
     for (let i = 0; i < data.length; i++) {
         const element = data[i];
-
+        
         mailOptions.to = element.EmailAddress;
-        var current = element;
+     
+      mailOptions.attachments=all_attachments.map(attachment=>attachment)
+       var current = element;
         var html = script(current);
+        
         mailOptions.html = html;
-
+       
+        
         var button = document.getElementById("se");
-
+        
+        
         transporter.sendMail(mailOptions, function (error, info) {
             if (error) {
                 flag = 1;

@@ -13,8 +13,8 @@
   },
   "keywords": [],
   "author": {
-    "name": "divyanshu0x16",
-    "email": "divyanshu22.dm@gmail.com"
+    "name": "Paarth3-1",
+    "email": "paarth.sachan2001@gmail.com"
   },
   "license": "MIT",
   "config": {
@@ -51,6 +51,7 @@
     "handlebars": "^4.7.6",
     "lodash": "^4.17.20",
     "nodemailer": "^6.4.17",
+    "nodemon": "^2.0.7",
     "xlsx": "^0.16.9"
   },
   "devDependencies": {
