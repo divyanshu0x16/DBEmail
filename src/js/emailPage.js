@@ -1,6 +1,5 @@
 var data = JSON.parse(localStorage.getItem("filteredData"));
 console.log(data);
-
 const { dialog } = require("electron").remote;
 function getFileExtension(filename){
 
@@ -82,6 +81,7 @@ document.getElementById("add-att").onclick=function add(){
     })
 }
 document.querySelector("#se").addEventListener("click", function () {
+    
     var email = document.getElementsByName("emailId")[0].value;
     var password = document.getElementsByName("psw")[0].value;
     var subject = document.getElementsByName("subject")[0].value;
@@ -103,6 +103,7 @@ document.querySelector("#se").addEventListener("click", function () {
 
 
     var errorFlag = 0;
+    var iterater=0;const data_len=data.length;
     for (let i = 0; i < data.length; i++) {
         const element = data[i];
         
@@ -123,6 +124,8 @@ document.querySelector("#se").addEventListener("click", function () {
                 flag = 1;
             } else {
                 console.log("Email sent: " + info.response);
+                iterater++;
+                if(iterater==data_len){window.alert('All mails send')}
             }
 
             if (flag == 0 && errorFlag == 0) {
@@ -137,5 +140,7 @@ document.querySelector("#se").addEventListener("click", function () {
                 }
             }
         });
+        // window.alert("All emails send!")
     }
+    
 });
