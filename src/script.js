@@ -25,7 +25,6 @@ window.onload = function () {
             "Organization B",
         ],
     ];
-    var sampleData=XLSX.readFile('database.xlsx');
 
     var database;
 
