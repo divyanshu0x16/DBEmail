@@ -4,7 +4,7 @@ An electron application for querying data in excel sheets and sending customized
 
 **Important**: If you are sending emails using Gmail, please allow access to Less Secure Apps. [ Read More](https://nodemailer.com/usage/using-gmail/)
 
-[Dowload Setup](https://www.dropbox.com/s/lye237ve6snf8mb/DatabaseMailer-1.0.0%20Setup.exe?dl=0)
+[Dowload Setup](https://drive.google.com/file/d/12xToAXEY3N942EhOHficUDOX7APlSN2c/view?usp=sharing)
 
 ### Screenshots and Demo
 
